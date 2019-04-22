@@ -10,7 +10,7 @@
   "dependencies": {
     "react": "16.8.3",
     "react-native": "0.59.3",
-    "react-native-share": "^1.1.3"
+    "react-native-share": "git+https://github.com/react-native-community/react-native-share.git"
   },
   "devDependencies": {
     "@babel/core": "7.4.0",

@@ -43,22 +43,29 @@ export default class App extends Component<Props> {
     // do something with the url, in our case navigate(route)
   }
 
-  // async openSingleShare() {
-  //   await Share.shareSingle(shareOptions);
-  // }
+  openSingleShare = async() => {
+    const shareOptions = {
+      title: 'Share via',
+      message: 'some message',
+      social: 'sms',
+    };
 
-  async openSingleShare() {
-    await Linking.openURL(this.state.url);
+    console.log('try to share single option: ', shareOptions);
+
+    try {
+      const shareRes = await Share.shareSingle(shareOptions);      
+    } catch (error) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');  
+    }
   }
 
-  render() {
+  // async openSingleShare() {
+  //   await Linking.openURL(this.state.url);
+  // }
 
-    const shareOptions = {
-      title: 'Share Title',
-      message: 'Message Body',
-      // url: 'https://id.yahoo.com',
-      social: 'sms'
-    }
+  render() {
 
     console.log('App| on render method here...');
     
@@ -68,6 +75,7 @@ export default class App extends Component<Props> {
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
         <TouchableOpacity onPress={()=>{
+          // this.openSingleShare();
           this.openSingleShare();
         }}>
           <View style={styles.instructions}>
