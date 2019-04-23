@@ -27,6 +27,39 @@ export default class App extends Component<Props> {
         }
   }
 
+  getSMSDivider = () => {
+    return Platform.OS === "ios" ? "&" : "?";
+  }
+
+  testWA = () => {
+    // let phoneNumber = '089699874054';
+    let phoneNumber = '087727909189';
+    
+    if ( phoneNumber.startsWith('0', 0) ) {
+      phoneNumber = '+62' + phoneNumber.slice(1, phoneNumber.length) ;
+    }
+    console.log('phoneNumber: ', phoneNumber);
+    //https://wa.me/whatsappphonenumber/?text=urlencodedtext
+    // const waUrl = 'https://wa.me/' + phoneNumber + '/?text=mymessagelhoooo';
+
+    const msg = escape("llphpf 89 fd98 !@#$%^&*()_+-~` lala");
+    console.log('msg: ', msg);
+    const upUrl = 'sms:' + phoneNumber + this.getSMSDivider() + 'body='+ msg;
+
+    // this.dismissShare();
+
+    return Linking.canOpenURL(upUrl).then( (supported) => {
+        if (supported) {
+            Linking.openURL(upUrl);
+        } else {
+            console.log('PLNPaymentResponseForm| can not open url for sending WA...');
+        }
+    } ).catch( (error) => {
+        console.error('PLNPaymentResponseForm| failed to open url for sending WA: ', error);
+    } );
+  }
+  
+
   componentDidMount() {
     const upUrl = this.state.url;
     Linking.addEventListener(upUrl, this.handleOpenURL);
@@ -47,7 +80,7 @@ export default class App extends Component<Props> {
     const shareOptions = {
       title: 'Share via',
       message: 'some message',
-      social: 'sms',
+      social: 'email',
     };
 
     console.log('try to share single option: ', shareOptions);
@@ -76,7 +109,7 @@ export default class App extends Component<Props> {
         <Text style={styles.instructions}>{instructions}</Text>
         <TouchableOpacity onPress={()=>{
           // this.openSingleShare();
-          this.openSingleShare();
+          this.testWA();
         }}>
           <View style={styles.instructions}>
             <Text>Simple Share</Text>
