@@ -3,6 +3,7 @@ package com.sharesample;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.tkporter.sendsms.SendSMSPackage;
 import cl.json.RNSharePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -24,6 +25,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            SendSMSPackage.getInstance(),
             new RNSharePackage()
       );
     }

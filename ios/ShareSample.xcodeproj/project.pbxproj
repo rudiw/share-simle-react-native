@@ -40,6 +40,7 @@
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		EE99842B567B478DAA818AB0 /* libRNShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E04695E5B14645C18E38339E /* libRNShare.a */; };
+		F27D8D4F4EB549288AA7D6D2 /* libSendSMS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 95B70BB3D8DE41C091BD62E5 /* libSendSMS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -349,6 +350,8 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		22DF7B0C9B664C3D80B36FFE /* RNShare.xcodeproj */ = {isa = PBXFileReference; name = "RNShare.xcodeproj"; path = "../node_modules/react-native-share/ios/RNShare.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		E04695E5B14645C18E38339E /* libRNShare.a */ = {isa = PBXFileReference; name = "libRNShare.a"; path = "libRNShare.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		E16FC6A3E6354836842C7F33 /* SendSMS.xcodeproj */ = {isa = PBXFileReference; name = "SendSMS.xcodeproj"; path = "../node_modules/react-native-sms/SendSMS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		95B70BB3D8DE41C091BD62E5 /* libSendSMS.a */ = {isa = PBXFileReference; name = "libSendSMS.a"; path = "libSendSMS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -378,6 +381,7 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				EE99842B567B478DAA818AB0 /* libRNShare.a in Frameworks */,
+				F27D8D4F4EB549288AA7D6D2 /* libSendSMS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -568,6 +572,7 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				22DF7B0C9B664C3D80B36FFE /* RNShare.xcodeproj */,
+				E16FC6A3E6354836842C7F33 /* SendSMS.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1196,10 +1201,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sms\SendSMS",
 				);
 			};
 			name = Debug;
@@ -1222,10 +1229,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sms\SendSMS",
 				);
 			};
 			name = Release;
@@ -1249,6 +1258,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sms\SendSMS",
 				);
 			};
 			name = Debug;
@@ -1271,6 +1281,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sms\SendSMS",
 				);
 			};
 			name = Release;
@@ -1301,10 +1312,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sms\SendSMS",
 				);
 			};
 			name = Debug;
@@ -1335,10 +1348,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sms\SendSMS",
 				);
 			};
 			name = Release;
@@ -1368,10 +1383,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sms\SendSMS",
 				);
 			};
 			name = Debug;
@@ -1401,10 +1418,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sms\SendSMS",
 				);
 			};
 			name = Release;

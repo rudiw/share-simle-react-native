@@ -7,8 +7,11 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TouchableOpacity, Linking} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableOpacity, Linking, Alert} from 'react-native';
 import Share from 'react-native-share';
+import { encode } from 'punycode';
+import SendSMS from 'react-native-sms';
+import * as Permissions from "./permissions";
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -20,11 +23,18 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
 
-  constructor(props) {
-    super(props)
-        this.state = {
-          url: 'sms:087727909189?body=message body here...',
-        }
+  constructor() {
+    super();
+    this.state = {
+      smsPermission: undefined,
+      status: undefined,
+    };
+
+    Permissions.check(Permissions.PERMISSIONS.SEND_SMS).then( upSmsPermission => {
+      this.setState({
+        smsPermission: upSmsPermission
+      });
+    });
   }
 
   getSMSDivider = () => {
@@ -39,14 +49,16 @@ export default class App extends Component<Props> {
       phoneNumber = '+62' + phoneNumber.slice(1, phoneNumber.length) ;
     }
     console.log('phoneNumber: ', phoneNumber);
-    //https://wa.me/whatsappphonenumber/?text=urlencodedtext
-    // const waUrl = 'https://wa.me/' + phoneNumber + '/?text=mymessagelhoooo';
 
-    const msg = escape("llphpf 89 fd98 !@#$%^&*()_+-~` lala");
-    console.log('msg: ', msg);
-    const upUrl = 'sms:' + phoneNumber + this.getSMSDivider() + 'body='+ msg;
+    const rawMsg = ('llphpf 89 fd98 !@#$^*()~`%la&la');
 
-    // this.dismissShare();
+    // https://wa.me/whatsappphonenumber/?text=urlencodedtext
+    const upUrl = 'https://wa.me/' + phoneNumber + '/?text=' + encodeURIComponent(rawMsg);
+
+    // const customMsg = rawMsg.replace('%', '%25').replace('&', '%26');
+    // const msg = encodeURIComponent(customMsg);
+    // console.log('try to send msg: ', msg);
+    // const upUrl = 'sms:' + phoneNumber + this.getSMSDivider() + 'body='+ msg;
 
     return Linking.canOpenURL(upUrl).then( (supported) => {
         if (supported) {
@@ -59,28 +71,11 @@ export default class App extends Component<Props> {
     } );
   }
   
-
-  componentDidMount() {
-    const upUrl = this.state.url;
-    Linking.addEventListener(upUrl, this.handleOpenURL);
-  }
-
-  componentWillUnmount() {
-    const upUrl = this.state.url;
-    Linking.removeEventListener(upUrl, this.handleOpenURL);
-  }
-  
-  handleOpenURL(event) {
-    console.log(event.url);
-    const route = e.url.replace(/.*?:\/\//g, '');
-    // do something with the url, in our case navigate(route)
-  }
-
   openSingleShare = async() => {
     const shareOptions = {
       title: 'Share via',
       message: 'some message',
-      social: 'email',
+      social: 'sms',
     };
 
     console.log('try to share single option: ', shareOptions);
@@ -91,6 +86,81 @@ export default class App extends Component<Props> {
       console.log('====================================');
       console.log(error);
       console.log('====================================');  
+    }
+  }
+
+  someFunction() {
+ 
+    if (this.state.smsPermission) {
+    } else {
+      this.requestSmsSendPermission();
+    }
+    
+
+    if (this.state.smsPermission) {
+      let myOptionsObject = {
+        body: 'The default body of the SMS awesome....!',
+        recipients: ['+6287727909189'],
+        direct_send: true,
+        successTypes: ['sent', 'queued']
+      };
+      SendSMS.send(myOptionsObject, (completed, cancelled, error) => {
+        if (error) {
+          console.log('sms error')
+        }
+        if (cancelled) {
+          console.log('sms cancelled')
+        }
+        if (completed) {
+          console.log('sms completed')
+        }
+        this.setState({
+          status: 'An SMS was sent..' 
+        })
+      });
+    } else {
+
+    }
+  }
+
+  async requestSmsSendPermission() {
+    try {
+      console.log('request sms send permission...');
+      const granted = await
+        Permissions.request(
+          Permissions.PERMISSIONS.SEND_SMS,
+          {
+            'title': 'Sending SMS',
+            'message': 'Inviting members needs permission to send SMS'
+          }
+        )
+      
+      let titleAlert = '';
+      let msgAlert = '';
+      if (granted === Permissions.RESULTS.GRANTED) {
+        titleAlert = 'Granted Send SMS Permission';
+        msgAlert = 'Silahkan coba lagi untuk mengirim SMS';
+        this.setState({
+          smsPermission: true
+        });
+
+      } else {
+        titleAlert = 'NOT Granted Send SMS Permission';
+        msgAlert = 'Tidak dapat mengirim SMS, silahkan beri akses tersebut.';
+        this.setState({
+          smsPermission: false
+        });
+      }
+      Alert.alert(
+        titleAlert,
+        msgAlert,
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        {cancelable: false},
+      );
+    } catch (err) {
+      console.warn(err)
     }
   }
 
@@ -109,7 +179,8 @@ export default class App extends Component<Props> {
         <Text style={styles.instructions}>{instructions}</Text>
         <TouchableOpacity onPress={()=>{
           // this.openSingleShare();
-          this.testWA();
+          // this.testWA();
+          this.someFunction();
         }}>
           <View style={styles.instructions}>
             <Text>Simple Share</Text>
