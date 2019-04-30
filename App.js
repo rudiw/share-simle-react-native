@@ -11,7 +11,8 @@ import {Platform, StyleSheet, Text, View, TouchableOpacity, Linking, Alert} from
 import Share from 'react-native-share';
 import SendSMS from 'react-native-sms';
 import * as Permissions from "./permissions";
-const fs = require('fs');
+const RNFS = require('react-native-fs');
+
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -81,6 +82,9 @@ export default class App extends Component<Props> {
     console.log('try to share single option: ', shareOptions);
 
     try {
+      // const bufferPdf = await fs.readFileSync('pre_paid.pdf');
+      console.log('Loaded buffer PDF file: ', bufferPdf.length);
+
       const shareRes = await Share.shareSingle(shareOptions);      
     } catch (error) {
       console.log('====================================');
@@ -168,6 +172,33 @@ export default class App extends Component<Props> {
   //   await Linking.openURL(this.state.url);
   // }
 
+  doDir() {
+    console.log('App| do dir for ', RNFS.DocumentDirectoryPath);
+    // get a list of files and directories in the main bundle
+    RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+    .then((result) => {
+      console.log('GOT RESULT', result);
+
+      // stat the first file
+      return Promise.all([RNFS.stat(result[0].path), result[0].path]);
+    })
+    .then((statResult) => {
+      if (statResult[0].isFile()) {
+        // if we have a file, read it
+        return RNFS.readFile(statResult[1], 'utf8');
+      }
+
+      return 'no file';
+    })
+    .then((contents) => {
+      // log the file contents
+      console.log(contents);
+    })
+    .catch((err) => {
+      console.log(err.message, err.code);
+    });
+  }
+
   render() {
 
     console.log('App| on render method here...');
@@ -178,9 +209,10 @@ export default class App extends Component<Props> {
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
         <TouchableOpacity onPress={()=>{
-          this.openSingleShare();
+          // this.openSingleShare();
           // this.testLinking();
           // this.sendSms();
+          this.doDir();
         }}>
           <View style={styles.instructions}>
             <Text>Simple Share</Text>
