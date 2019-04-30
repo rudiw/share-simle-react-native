@@ -9,9 +9,9 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TouchableOpacity, Linking, Alert} from 'react-native';
 import Share from 'react-native-share';
-import { encode } from 'punycode';
 import SendSMS from 'react-native-sms';
 import * as Permissions from "./permissions";
+const fs = require('fs');
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -41,7 +41,7 @@ export default class App extends Component<Props> {
     return Platform.OS === "ios" ? "&" : "?";
   }
 
-  testWA = () => {
+  testLinking = () => {
     // let phoneNumber = '089699874054';
     let phoneNumber = '087727909189';
     
@@ -75,7 +75,7 @@ export default class App extends Component<Props> {
     const shareOptions = {
       title: 'Share via',
       message: 'some message',
-      social: 'sms',
+      social: 'email',
     };
 
     console.log('try to share single option: ', shareOptions);
@@ -89,7 +89,7 @@ export default class App extends Component<Props> {
     }
   }
 
-  someFunction() {
+  sendSms() {
  
     if (this.state.smsPermission) {
     } else {
@@ -178,9 +178,9 @@ export default class App extends Component<Props> {
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
         <TouchableOpacity onPress={()=>{
-          // this.openSingleShare();
-          // this.testWA();
-          this.someFunction();
+          this.openSingleShare();
+          // this.testLinking();
+          // this.sendSms();
         }}>
           <View style={styles.instructions}>
             <Text>Simple Share</Text>
