@@ -9,7 +9,8 @@ import {NativeModules, PermissionsAndroid, Platform} from 'react-native';
 
 PERMISSIONS = {
   READ_CONTACTS: 'android.permission.READ_CONTACTS',
-  SEND_SMS: 'android.permission.SEND_SMS'
+  SEND_SMS: 'android.permission.SEND_SMS',
+  WRITE_EXTERNAL_STORAGE: 'android.permission.WRITE_EXTERNAL_STORAGE'
 };
 RESULTS = {
   GRANTED: 'granted',
