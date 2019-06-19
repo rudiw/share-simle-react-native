@@ -258,7 +258,9 @@ export default class App extends Component<Props> {
     RNFS.writeFile(file_path, this.base64String, 'base64')
     .then( (tmp) => {
       console.log('Tmp: ', tmp);
-      alert('udh yaa..');
+      // alert('udh yaa..');
+
+      this.openPdfFile();
     })
     .catch((error) => {
       console.log('Error: ', error);
@@ -273,10 +275,10 @@ export default class App extends Component<Props> {
     console.log('Try to open PDF: ', file_path);
 
     if (Platform.OS === 'ios'){
-      fetch_blob.ios.openDocument(path);
+      fetch_blob.ios.openDocument(file_path);
     } else {
       const android = fetch_blob.android;
-      android.actionViewIntent(path, 'application/pdf');
+      android.actionViewIntent(file_path, 'application/pdf');
     }
     
   }
@@ -326,15 +328,15 @@ export default class App extends Component<Props> {
           // this.testLinking();
           // this.sendSms();
           // this.doDir();
-          // this.saveBase64AsPdf();
-          this.openPdfFile();
+          this.saveBase64AsPdf();
+          // this.openPdfFile();
         }}>
           <View style={styles.instructions}>
             <Text>Simple Share</Text>
           </View>
         </TouchableOpacity>
 
-        <View style={styles.container}>
+        {/* <View style={styles.container}>
             <Pdf
                 source={this.state.pdfUri}
                 onLoadComplete={(numberOfPages,filePath)=>{
@@ -347,7 +349,7 @@ export default class App extends Component<Props> {
                     console.log(error);
                 }}
                 style={styles.pdf}/>
-        </View>
+        </View> */}
       </View>
     );
 
