@@ -7,11 +7,12 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TouchableOpacity, Linking, Alert} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableOpacity, Linking, Alert, Dimensions} from 'react-native';
 import Share from 'react-native-share';
 import SendSMS from 'react-native-sms';
 import * as Permissions from "./permissions";
-import fetch_blob from 'react-native-fetch-blob';
+import fetch_blob from 'rn-fetch-blob';
+import Pdf from 'react-native-pdf';
 const RNFS = require('react-native-fs');
 
 const instructions = Platform.select({
@@ -30,6 +31,7 @@ export default class App extends Component<Props> {
       smsPermission: undefined,
       status: undefined,
       writePermission: undefined,
+      pdfUri: undefined,
     };
 
     Permissions.check(Permissions.PERMISSIONS.SEND_SMS).then( upSmsPermission => {
@@ -43,6 +45,19 @@ export default class App extends Component<Props> {
         writePermission: upWritePermission
       });
     });
+
+    const dirs = fetch_blob.fs.dirs      
+    // const file_path = rootPath + "/mypdf.pdf"
+    const file_path = dirs.DownloadDir + "/mypdf.pdf";
+    if( RNFS.exists(file_path) ) {
+      console.log('file_path: ', file_path);
+
+      this.state = {
+        pdfUri: {uri: 'file://' + file_path}
+      };
+
+      console.log('pdfUri: ', this.state.pdfUri);
+    }
   }
 
   getSMSDivider = () => {
@@ -251,6 +266,21 @@ export default class App extends Component<Props> {
     });
   }
 
+  openPdfFile() {
+    const dirs = fetch_blob.fs.dirs      
+    // const file_path = rootPath + "/mypdf.pdf"
+    const file_path = dirs.DownloadDir + "/mypdf.pdf";
+    console.log('Try to open PDF: ', file_path);
+
+    if (Platform.OS === 'ios'){
+      fetch_blob.ios.openDocument(path);
+    } else {
+      const android = fetch_blob.android;
+      android.actionViewIntent(path, 'application/pdf');
+    }
+    
+  }
+
   // async openSingleShare() {
   //   await Linking.openURL(this.state.url);
   // }
@@ -296,12 +326,28 @@ export default class App extends Component<Props> {
           // this.testLinking();
           // this.sendSms();
           // this.doDir();
-          this.saveBase64AsPdf();
+          // this.saveBase64AsPdf();
+          this.openPdfFile();
         }}>
           <View style={styles.instructions}>
             <Text>Simple Share</Text>
           </View>
         </TouchableOpacity>
+
+        <View style={styles.container}>
+            <Pdf
+                source={this.state.pdfUri}
+                onLoadComplete={(numberOfPages,filePath)=>{
+                    console.log(`number of pages: ${numberOfPages}`);
+                }}
+                onPageChanged={(page,numberOfPages)=>{
+                    console.log(`current page: ${page}`);
+                }}
+                onError={(error)=>{
+                    console.log(error);
+                }}
+                style={styles.pdf}/>
+        </View>
       </View>
     );
 
@@ -326,4 +372,8 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  pdf: {
+    flex:1,
+    width:Dimensions.get('window').width,
+  }
 });
